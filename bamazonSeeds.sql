@@ -1,20 +1,6 @@
-DROP DATABASE IF EXISTS bamazonDB;
-
-CREATE DATABASE bamazonDB;
-
-USE bamazonDB;
-
-CREATE TABLE products (
-  item_id INT NOT NULL AUTO_INCREMENT,
-  product_name VARCHAR(45) NULL,
-  department_name VARCHAR(45) NULL,
-  price DECIMAL(10,2) NULL,
-  stock_quantity INT NULL,
-  PRIMARY KEY (item_id)
-);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("tire iron", "tools", 14.50, 1);
+VALUES ("tire iron", "tools", 14.50, 7);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("office chairs", "office", 111.12, 3);
