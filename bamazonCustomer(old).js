@@ -46,61 +46,51 @@ function transactionFunct() {
     .then(function (answer) {
       switch (answer.inventory) {
         case "[1]	tire irons":
-          itemId = 1;
-          item = "tire iron(s)"
+          item = "tire irons";
           purchase();
           break;
 
         case "[2]	office chairs":
-        itemId = 2;
         item = "office chairs";
         purchase();
           break;
 
         case "[3]	ice cream pints (lime only)":
-        itemId = 3;
         item = "ice cream pints (lime only)";
         purchase();
           break;
 
         case "[4]	red wagon wheels":
-        itemId = 4;
         item = "red wagon wheels";
         purchase();
           break;
 
         case "[5]	used t-shirts":
-        itemId = 5;
         item = "used t-shirts";
         purchase();
           break;
 
         case "[6]	refurbished screwdrivers":
-        itemId = 6;
         item = "refurbished screwdrivers";
         purchase();
           break;
 
         case "[7]	120 oz dark coffee":
-        itemId = 7;
         item = "120 oz dark coffee";
         purchase();
           break;
 
         case "[8]	steel cups":
-        itemId = 8;
         item = "steel cups";
         purchase();
           break;
 
         case "[9] jeans (OSFA)":
-        itemId = 9;
         item = "jeans (OSFA)";
         purchase();
           break;
 
         case "[10] red wagons (no wheels)":
-        itemId = 10;
         item = "red wagons (no wheels)";
         purchase();
           break;
@@ -123,23 +113,22 @@ function purchase() {
     })
 
     .then(function (answer) {
-      var query = "SELECT stock_quantity FROM bamazondb.products WHERE item_id =" + itemId;
-        //   var query = "UPDATE bamazondb.products SET stock_quantity=stock_quantity - " + answer.inventoryIron + " WHERE item_id=" + itemid;
+      var query = "SELECT stock_quantity FROM bamazondb.products WHERE product_name = " + item;
       connection.query(query, { inventoryIron: answer.inventoryIron }, function (err, res) {
-        if (JSON.stringify(res[0].stock_quantity) >= answer.inventoryIron) {
-          console.log("\n"+ answer.inventoryIron + " " + item + "coming up!" );
-          console.log(JSON.stringify(res[0].stock_quantity));
-        //   query = "UPDATE stock_quantity FROM bamazondb.products SET stock_quantity = stock_quantity - " + answer.inventoryIron + " WHERE product_name = 'tire irons'";
-        query = "UPDATE bamazondb.products SET stock_quantity=stock_quantity - " + answer.inventoryIron + " WHERE item_id=" + itemId;
+        if (res >= answer.inventoryIron) {
+          console.log(answer.inventoryIron);
+          query = "UPDATE stock_quantity FROM bamazondb.products SET stock_quantity = stock_quantity - " + answer.inventoryIron + " WHERE product_name = " + item;
+         
           connection.query(query, { inventoryIron: answer.inventoryIron }, function (err, res) {
-                        console.log('\n Quantity Now Remaining: ' + JSON.stringify(res[0]));
-            // {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"(Rows matched: 1  Changed: 1  Warnings: 0","protocol41":true,"changedRows":1} test2
+            console.log('\n' + answer.inventoryIron + " test1");
+            console.log('\n' + JSON.stringify(res) + " test2");
+            
           })
         }
-        else { console.log("No can do, we dont have that many!  We have " + JSON.stringify(res[0].stock_quantity) + ' in our inventory!') }
+        else { console.log("No can do, we dont have that many!  We have " + JSON.stringify(res) + 'left!') }
 
-        console.log('\n --------------------\n');
-        transactionFunct();
+        console.log('\n' + res);
+        // transactionFunct();
       });
     });
 }
